@@ -1,19 +1,60 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="min-w-screen bg-gray-100 flex bg-gray-100 font-sans overflow-hidden flex-col pt-4">
+      
+      <h2 class="w-full lg:w-5/6 px-4 mx-auto font-bold" >Example With no props passed</h2>
+      <ViTable
+        :dataSource="dataSource"
+        :headerColumns="columns"
+        :filters="filters"
+      />
+    </div>
+
+    <div class="min-w-screen bg-gray-100 flex bg-gray-100 font-sans overflow-hidden flex-col pt-10">
+      
+      <h2 class="w-full lg:w-5/6 px-4 mx-auto font-bold" >Example With props passed</h2>
+      <ViTable
+        :dataSource="dataSource"
+        :headerColumns="columns"
+        :filters="filters"
+        :paginate="false"
+        :isSearchable="false"
+        :isFilterable="true"
+        :dataPerPage="8"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import dataImport from "@/util/data";
+import headerColumns from "@/util/headers";
+import filterData from "@/util/filterData";
 
+import ViTable from "@/components/ViTable.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    ViTable,
+  },
+  data() {
+    return {
+      dataSource: [],
+      columns: [],
+      filters: [],
+    };
+  },
+  methods: {
+    fetchData() {
+      this.dataSource = dataImport;
+      this.columns = headerColumns;
+      this.filters = filterData;
+    },
+  },
+  async mounted() {
+    await this.fetchData();
+  },
+};
 </script>
 
 <style>
@@ -21,8 +62,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
+import VTable from './v-table.js'
+import '@/assets/styles/app.css'
+
+Vue.use(VTable)
 
 Vue.config.productionTip = false
 
