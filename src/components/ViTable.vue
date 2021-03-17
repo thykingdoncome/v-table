@@ -1,23 +1,30 @@
 <template>
   <div
-    v-if=" headerColumns.length > 0"
+    v-if="headerColumns.length > 0"
     class="min-w-screen bg-gray-100 flex bg-gray-100 font-sans overflow-hidden flex-col"
   >
-    <div class="w-full lg:w-5/6 px-4 mx-auto pt-8" v-if="isSearchable || isFilterable">
+    <div
+      class="w-full lg:w-5/6 px-4 mx-auto pt-8"
+      v-if="isSearchable || isFilterable"
+    >
       <div class="flex justify-between items-center">
         <input
-        type="text"
-        v-if="isSearchable"
-        v-model="searchQuery"
-        placeholder="Search table"
-        class="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
-      />
-      <select v-model="filterBy" v-if="isFilterable">
-        <option value="-1"> Filter </option>
-        <option v-for="(option, index) in filters" :key="index" :value="index">
-          {{ option.name }}
-        </option>
-      </select>
+          type="text"
+          v-if="isSearchable"
+          v-model="searchQuery"
+          placeholder="Search table"
+          class="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
+        />
+        <select v-model="filterBy" v-if="isFilterable">
+          <option value="-1"> Filter </option>
+          <option
+            v-for="(option, index) in filters"
+            :key="index"
+            :value="index"
+          >
+            {{ option.name }}
+          </option>
+        </select>
       </div>
 
       <div class="bg-white shadow-md rounded my-6">
@@ -61,7 +68,10 @@
         </table>
       </div>
 
-      <nav class="pagination-wrapper py-2" v-if="filteredData.length > 0 && paginate && dataSource.length > 0">
+      <nav
+        class="pagination-wrapper py-2"
+        v-if="filteredData.length > 0 && paginate && dataSource.length > 0"
+      >
         <span
           >{{ pagination.from }} - {{ pagination.to }} of
           {{ pagination.total }}</span
@@ -148,18 +158,18 @@ export default {
     //paginate table data or not
     paginate: {
       type: Boolean,
-      default: true
+      default: true,
     },
     //if table should have an input field to search
     isSearchable: {
       type: Boolean,
-      default: true
+      default: true,
     },
     //if table data should be filterable
     isFilterable: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     //function to set || manage pagination states
@@ -183,6 +193,13 @@ export default {
     onPreviousPage() {
       --this.pagination.currentPage;
     },
+
+// reset paginattion state 
+    resetPagination() {
+      this.pagination.currentPage = 1;
+      this.pagination.previousPage = "";
+      this.pagination.nextPage = "";
+    },
   },
   computed: {
     paginatedData() {
@@ -197,6 +214,7 @@ export default {
     filteredData() {
       let searchFilter = this.searchQuery.toLowerCase();
       let dataSource = this.dataSource;
+      this.resetPagination()
 
       //filter data by search querry
       if (this.isSearchable && this.searchQuery) {
@@ -210,7 +228,7 @@ export default {
           });
         });
       }
-      
+
       //filter data by filter queries
       if (this.isFilterable && this.filterBy >= 0) {
         dataSource = dataSource.filter((data) => {
