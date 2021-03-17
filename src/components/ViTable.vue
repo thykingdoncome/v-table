@@ -15,19 +15,36 @@
           placeholder="Search table"
           class="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none"
         />
-        <select v-model="filterBy" v-if="isFilterable">
-          <option value="-1"> Filter </option>
-          <option
-            v-for="(option, index) in filters"
-            :key="index"
-            :value="index"
-          >
-            {{ option.name }}
-          </option>
-        </select>
+        <div class="flex items-center">
+          <div class="pr-2">
+            <select v-model="filterBy" v-if="isFilterable">
+            <option value="-1"> Filter </option>
+            <option
+              v-for="(option, index) in filters"
+              :key="index"
+              :value="index"
+            >
+              {{ option.name }}
+            </option>
+          </select>
+          </div>
+
+          <div v-if="dataPerPageChange">
+            <label for="dataPerPage" class="pr-1">per page:</label>
+            <select
+              name="dataPerPage"
+              v-model="dataPerPage"
+            >
+              <option></option>
+              <option>10</option>
+              <option>20</option>
+              <option>30</option>
+            </select>
+          </div>
+        </div>
       </div>
 
-      <div class="bg-white shadow-md rounded my-6">
+      <div class="bg-white shadow-md rounded my-6 min-h-100">
         <table class="min-w-max w-full table-auto relative">
           <thead>
             <tr
@@ -50,7 +67,7 @@
             <h1>No data available</h1>
           </div>
 
-          <tbody class="text-gray-600 text-sm font-light">
+          <tbody v-else class="text-gray-600 text-sm font-light">
             <tr
               v-for="item in paginatedData"
               :key="item.id"
@@ -140,6 +157,11 @@ export default {
       type: Number,
       default: 5,
     },
+    //change number of data per page
+    dataPerPageChange: {
+      type: Boolean,
+      default: true,
+    },
     //header || tableColumns
     headerColumns: {
       type: Array,
@@ -180,6 +202,7 @@ export default {
       this.pagination.previousPage = pageIndex > 1 ? pageIndex : "";
       this.pagination.nextPage =
         arr.length > this.pagination.to ? pageIndex + 1 : "";
+      this.pagination.total = this.filteredData.length;
 
       return arr.slice((pageIndex - 1) * length, pageIndex * length);
     },
@@ -187,6 +210,7 @@ export default {
     //move to next page if available
     onNextPage() {
       ++this.pagination.currentPage;
+      console.log(this.pagination.total, "tooot");
     },
 
     //move to previous page if available
@@ -194,7 +218,7 @@ export default {
       --this.pagination.currentPage;
     },
 
-// reset paginattion state 
+    // reset paginattion state
     resetPagination() {
       this.pagination.currentPage = 1;
       this.pagination.previousPage = "";
@@ -214,7 +238,7 @@ export default {
     filteredData() {
       let searchFilter = this.searchQuery.toLowerCase();
       let dataSource = this.dataSource;
-      this.resetPagination()
+      this.resetPagination();
 
       //filter data by search querry
       if (this.isSearchable && this.searchQuery) {

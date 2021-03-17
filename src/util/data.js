@@ -113,4 +113,25 @@ export default [
         telephone: '08010000000',
         status: 'Inactive',
     },
+    {
+        id: uuidv4(),
+        username: 'Grace Effion',
+        email: 'grace@lendsqr.com',
+        telephone: '08010000000',
+        status: 'Pending',
+    },
+    {
+        id: uuidv4(),
+        username: 'Grace Effion',
+        email: 'grace@lendsqr.com',
+        telephone: '08010000000',
+        status: 'Pending',
+    },
+    {
+        id: uuidv4(),
+        username: 'Grace Effion',
+        email: 'grace@lendsqr.com',
+        telephone: '08010000000',
+        status: 'Pending',
+    },
 ]

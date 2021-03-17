@@ -21,6 +21,7 @@
         :isSearchable="false"
         :isFilterable="true"
         :dataPerPage="8"
+        :dataPerPageChange="false"
       />
     </div>
   </div>

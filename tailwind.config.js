@@ -8,6 +8,9 @@ module.exports = {
         },
         width: {
           fit: 'fit-content'
+        },
+        minHeight: {
+          '100': '100px'
         }
       },
     },
